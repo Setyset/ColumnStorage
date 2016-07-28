@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Export generator="Cache" version="25">
+<Export generator="Cache" version="25" zv="Cache for Windows (x86-32) 2016.1 (Build 656U)" ts="2016-07-28 19:01:45">
 <Class name="Simple.Person">
-<StorageStrategy>ColumnStorage</StorageStrategy>
 <Super>%RegisteredObject</Super>
+<TimeChanged>64127,68401.645972</TimeChanged>
 <TimeCreated>64127,57606.684284</TimeCreated>
 
 <Property name="Name">
@@ -32,39 +32,41 @@ Person's Date of Birth.</Description>
 </Property>
 
 <Method name="%Id">
-<Implementation><![CDATA[	return ..Id
+<Implementation><![CDATA[    return ..Id
 ]]></Implementation>
 </Method>
 
 <Method name="Save">
 <CodeMode>objectgenerator</CodeMode>
 <Implementation><![CDATA[
-	do %code.WriteLine(" if (..%Id()= """") {")
-	do %code.WriteLine(" set ..Id = $i(^Simple.PersonLordCS) ")
-	do %code.WriteLine(" } ")
-	
-	for i = 1:1:%class.Properties.Count()
-	{
-		set property = %class.Properties.GetAt(i)
-		do %code.WriteLine(" set ^Simple.PersonLordCS("""_property.Name_""",..%Id()) = .."""_property.Name_"""")	
-	}
-	quit $$$OK
+    do %code.WriteLine(" if (..%Id()= """") {")
+    do %code.WriteLine(" set ..Id = $i(^Simple.PersonLordCS) ")
+    do %code.WriteLine(" } ")
+    
+    for i = 1:1:%compiledclass.Properties.Count()
+    {
+        set property = %compiledclass.Properties.GetAt(i)
+        if (property.Name = "%%OID") continue
+        do %code.WriteLine(" set ^Simple.PersonLordCS("""_property.Name_""",..%Id()) = .."""_property.Name_"""")    
+    }
+    quit $$$OK
 ]]></Implementation>
 </Method>
 
-<Method name="Open">
+<Method name="OpenId">
 <ClassMethod>1</ClassMethod>
 <CodeMode>objectgenerator</CodeMode>
 <FormalSpec>id:%String</FormalSpec>
 <Implementation><![CDATA[
-	do %code.WriteLine(" set Jester = ##class(Simple.Person).%New()")
-	for i = 1:1:%class.Properties.Count()
-	{
-		set property = %class.Properties.GetAt(i)
-		do %code.WriteLine(" set Jester."""_property.Name_"""= ^Simple.PersonLordCS("""_property.Name_""",id) ")	
-	}
-	do %code.WriteLine(" return Jester")
-	quit $$$OK
+    do %code.WriteLine(" set Jester = ##class(Simple.Person).%New()")
+    for i = 1:1:%compiledclass.Properties.Count()
+    {
+        set property = %compiledclass.Properties.GetAt(i)
+        if (property.Name = "%%OID") continue
+        do %code.WriteLine(" set Jester."""_property.Name_"""= ^Simple.PersonLordCS("""_property.Name_""",id) ")    
+    }
+    do %code.WriteLine(" return Jester")
+    quit $$$OK
 ]]></Implementation>
 </Method>
 
@@ -73,17 +75,14 @@ Person's Date of Birth.</Description>
 <CodeMode>objectgenerator</CodeMode>
 <FormalSpec>id:%String</FormalSpec>
 <Implementation><![CDATA[
-	for i = 1:1:%class.Properties.Count()
-	{
-		set property = %class.Properties.GetAt(i)
-		do %code.WriteLine(" kill ^Simple.PersonLordCS("""_property.Name_""",id) ")	
-	}
-	quit $$$OK
+    for i = 1:1:%class.Properties.Count()
+    {
+        set property = %compiledclass.Properties.GetAt(i)
+        if (property.Name = "%%OID") continue
+        do %code.WriteLine(" kill ^Simple.PersonLordCS("""_property.Name_""",id) ") 
+    }
+    quit $$$OK
 ]]></Implementation>
 </Method>
-
-<Storage name="ColumnStorage">
-<Type>%CustomStorage</Type>
-</Storage>
 </Class>
 </Export>
