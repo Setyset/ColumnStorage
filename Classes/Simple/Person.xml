@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Export generator="Cache" version="25" zv="Cache for Windows (x86-32) 2016.1 (Build 656U)" ts="2016-07-28 19:01:45">
+<Export generator="Cache" version="25">
 <Class name="Simple.Person">
-<Super>%RegisteredObject</Super>
-<TimeChanged>64127,68401.645972</TimeChanged>
+<Super>%Populate,Simple.Storage</Super>
 <TimeCreated>64127,57606.684284</TimeCreated>
+
+<Parameter name="DataGlobal">
+<Expression>"^"_..%ClassName(1)_"Lord"</Expression>
+</Parameter>
 
 <Property name="Name">
 <Description>
@@ -25,64 +28,5 @@ Person's Social Security number. This is validated using pattern match.</Descrip
 Person's Date of Birth.</Description>
 <Type>%Date</Type>
 </Property>
-
-<Property name="Id">
-<Type>%Integer</Type>
-<Private>1</Private>
-</Property>
-
-<Method name="%Id">
-<Implementation><![CDATA[    return ..Id
-]]></Implementation>
-</Method>
-
-<Method name="Save">
-<CodeMode>objectgenerator</CodeMode>
-<Implementation><![CDATA[
-    do %code.WriteLine(" if (..%Id()= """") {")
-    do %code.WriteLine(" set ..Id = $i(^Simple.PersonLordCS) ")
-    do %code.WriteLine(" } ")
-    
-    for i = 1:1:%compiledclass.Properties.Count()
-    {
-        set property = %compiledclass.Properties.GetAt(i)
-        if (property.Name = "%%OID") continue
-        do %code.WriteLine(" set ^Simple.PersonLordCS("""_property.Name_""",..%Id()) = .."""_property.Name_"""")    
-    }
-    quit $$$OK
-]]></Implementation>
-</Method>
-
-<Method name="OpenId">
-<ClassMethod>1</ClassMethod>
-<CodeMode>objectgenerator</CodeMode>
-<FormalSpec>id:%String</FormalSpec>
-<Implementation><![CDATA[
-    do %code.WriteLine(" set Jester = ##class(Simple.Person).%New()")
-    for i = 1:1:%compiledclass.Properties.Count()
-    {
-        set property = %compiledclass.Properties.GetAt(i)
-        if (property.Name = "%%OID") continue
-        do %code.WriteLine(" set Jester."""_property.Name_"""= ^Simple.PersonLordCS("""_property.Name_""",id) ")    
-    }
-    do %code.WriteLine(" return Jester")
-    quit $$$OK
-]]></Implementation>
-</Method>
-
-<Method name="DeleteId">
-<ClassMethod>1</ClassMethod>
-<CodeMode>objectgenerator</CodeMode>
-<FormalSpec>id:%String</FormalSpec>
-<Implementation><![CDATA[
-    for i = 1:1:%class.Properties.Count()
-    {
-        set property = %compiledclass.Properties.GetAt(i)
-        if (property.Name = "%%OID") continue
-        do %code.WriteLine(" kill ^Simple.PersonLordCS("""_property.Name_""",id) ") 
-    }
-    quit $$$OK
-]]></Implementation>
-</Method>
 </Class>
 </Export>
