@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25" zv="Cache for Windows (x86-32) 2016.1 (Build 656U)" ts="2016-07-28 19:13:29">
+<Class name="Simple.Storage">
+<TimeChanged>64127,69178.943206</TimeChanged>
+<TimeCreated>64127,68746.094834</TimeCreated>
+
+<Method name="GetPropertyValue">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>id:%String,property:%String,value:%String</FormalSpec>
+<ReturnType>%String</ReturnType>
+</Method>
+
+<Method name="SetPropertyValue">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>id:%String,property:%String,value:%String</FormalSpec>
+</Method>
+
+<Method name="GetNextIndex">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>global:%String</FormalSpec>
+</Method>
+
+<Method name="GetObject">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>global:%String,id:%String</FormalSpec>
+</Method>
+</Class>
+</Export>
