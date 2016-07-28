@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Simple.Person">
+<StorageStrategy>ColumnStorage</StorageStrategy>
+<TimeCreated>64127,57606.684284</TimeCreated>
+
+<Property name="Name">
+<Description>
+Person's name.</Description>
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="SSN">
+<Description>
+Person's Social Security number. This is validated using pattern match.</Description>
+<Type>%String</Type>
+<Required>1</Required>
+<Parameter name="PATTERN" value="3N1&quot;-&quot;2N1&quot;-&quot;4N"/>
+</Property>
+
+<Property name="DOB">
+<Description>
+Person's Date of Birth.</Description>
+<Type>%Date</Type>
+</Property>
+
+<Property name="Id">
+<Type>%Integer</Type>
+<Private>1</Private>
+</Property>
+
+<Method name="%Id">
+<Implementation><![CDATA[	return ..Id
+]]></Implementation>
+</Method>
+
+<Method name="Save">
+<CodeMode>objectgenerator</CodeMode>
+<Implementation><![CDATA[
+	do %code.WriteLine(" if (..%Id()'= """") {")
+	do %code.WriteLine(" set ..Id = $i(^Simple.PersonLordCS) ")
+	do %code.WriteLine(" } ")
+	
+	for i = 1:1:%compiledclass.Properties.Count()
+	{
+		set property = %compiledclass.Properties.GetAt(i)
+		do %code.WriteLine(" set ^Simple.PersonLordCS("""_property.Name_""",..%Id()) = .."""_property.Name_"""")	
+	}
+	quit $$$OK
+]]></Implementation>
+</Method>
+
+<Method name="Open">
+<ClassMethod>1</ClassMethod>
+<CodeMode>objectgenerator</CodeMode>
+<FormalSpec>id:%String</FormalSpec>
+<Implementation><![CDATA[
+	do %code.WriteLine(" set Jester = ##class(Simple.Person).%New()")
+	for i = 1:1:%class.Properties.Count()
+	{
+		set property = %class.Properties.GetAt(i)
+		do %code.WriteLine(" set Jester."""_property.Name_"""= ^Simple.PersonLordCS("""_property.Name_""",id) ")	
+	}
+	do %code.WriteLine(" return Jester")
+	quit $$$OK
+]]></Implementation>
+</Method>
+
+<Storage name="ColumnStorage">
+<Type>%CustomStorage</Type>
+</Storage>
+</Class>
+</Export>
