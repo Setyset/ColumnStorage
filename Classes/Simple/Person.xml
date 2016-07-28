@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
 <Class name="Simple.Person">
-<Super>%Populate,Simple.Storage</Super>
+<Super>Simple.Storage</Super>
 <TimeCreated>64127,57606.684284</TimeCreated>
 
 <Parameter name="DataGlobal">
@@ -28,5 +28,20 @@ Person's Social Security number. This is validated using pattern match.</Descrip
 Person's Date of Birth.</Description>
 <Type>%Date</Type>
 </Property>
+
+<Method name="Populate">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>count:%Integer=10</FormalSpec>
+<Implementation><![CDATA[
+	for i = 1:1:count
+	{
+		set p = ##class(Simple.Person).%New()
+		set p.Name = ##class(%PopulateUtils).Name()
+		set p.DOB = ##class(%PopulateUtils).Date()
+		set p.SSN = ##class(%PopulateUtils).SSN()
+		do p.%Save()	
+	}
+]]></Implementation>
+</Method>
 </Class>
 </Export>
